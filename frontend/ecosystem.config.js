@@ -1,23 +1,30 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
 
-const { DEPLOY_USER, DEPLOY_HOST, DEPLOY_PATH, DEPLOY_REPOSITORY, DEPLOY_REF } =
-  process.env;
+dotenv.config({ path: '.env.deploy' });
+
+const {
+  DEPLOY_USER,
+  DEPLOY_HOST,
+  DEPLOY_PATH,
+  DEPLOY_REF,
+  DEPLOY_REPO,
+} = process.env;
 
 module.exports = {
-  apps: [
-    {
-      name: "mesto",
-      script: "dist/app.js",
-    },
-  ],
+  apps: [{
+    name: 'frontend',
+  }],
+  env: {
+    NODE_ENV: 'production',
+  },
   deploy: {
     production: {
       user: DEPLOY_USER,
       host: DEPLOY_HOST,
       ref: DEPLOY_REF,
-      repo: DEPLOY_REPOSITORY,
+      repo: DEPLOY_REPO,
       path: DEPLOY_PATH,
-      "post-deploy": "cd frontend && pwd && npm ci && npm run build",
+      'post-deploy': 'export PATH=$PATH:~/.nvm/versions/node/v18.20.3/bin/ && npm i && npm run build'
     },
   },
 };

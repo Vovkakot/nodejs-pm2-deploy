@@ -1,42 +1,32 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+dotenv.config({ path: '.env.deploy' });
 
 const {
-  DATABASE_HOST,
-  DATABASE_USER,
-  DATABASE_PASSWORD,
+  DEPLOY_USER,
   DEPLOY_HOST,
   DEPLOY_PATH,
   DEPLOY_REF,
-  DEPLOY_USER,
+  DEPLOY_REPO,
 } = process.env;
 
 module.exports = {
   apps: [{
     name: 'backend',
-    script: './src/app.ts',
-    env_production: {
-      NODE_ENV: 'production',
-      DATABASE_HOST,
-      DATABASE_USER,
-      DATABASE_PASSWORD,
-      PORT: 3000,
-    },
-    env_development: {
-      NODE_ENV: 'production',
-      DATABASE_HOST: 'localhost',
-      DATABASE_USER: 'test-user',
-      DATABASE_PASSWORD: 'test-user-password',
-    }
+    script: './dist/app.js',
   }],
-
+  env: {
+    NODE_ENV: 'production',
+  },
   deploy: {
     production: {
       user: DEPLOY_USER,
       host: DEPLOY_HOST,
       ref: DEPLOY_REF,
-      repo: 'https://github.com/Vovkakot/nodejs-pm2-deploy.git',
+      repo: DEPLOY_REPO,
       path: DEPLOY_PATH,
-      'post-deploy': `pm2 start ${DEPLOY_PATH}`,
+      'pre-deploy-local': `scp ./.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
+      'post-deploy': 'export PATH=$PATH:~/.nvm/versions/node/v18.20.3/bin/ && npm i && npm run build && pm2 restart all',
     },
   },
 };
