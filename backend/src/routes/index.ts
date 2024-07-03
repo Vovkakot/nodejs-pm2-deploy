@@ -1,4 +1,4 @@
-import {
+import express, {
   Router, Request, Response, NextFunction,
 } from 'express';
 import userRouter from './users';
@@ -11,6 +11,7 @@ import {
 import { validateUserBody, validateAuthentication } from '../middlewares/validatons';
 
 const router = Router();
+const app = express();
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
