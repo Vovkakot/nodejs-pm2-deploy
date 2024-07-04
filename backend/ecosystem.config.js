@@ -26,7 +26,7 @@ module.exports = {
       repo: DEPLOY_REPO,
       path: DEPLOY_PATH,
       'pre-deploy-local': `scp ./.env ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}`,
-      'post-deploy': 'npm i && npm run build'
+      'post-deploy': 'export PATH=$PATH:~/.nvm/versions/node/v16.20.2/bin/ && npm i && npm run build && pm2 restart all'
   },
 }
 }
