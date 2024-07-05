@@ -12,13 +12,13 @@ import { validateUserBody, validateAuthentication } from '../middlewares/validat
 
 const router = Router();
 const app = express();
-app.get('/crash-test', () => {
+router.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
 router.post('/signup', validateUserBody, createUser);
-app.get('/crash-test', () => {
+router.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
