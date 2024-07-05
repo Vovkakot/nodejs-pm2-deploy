@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 
-dotenv.config({ path: '.env.deploy' });
+dotenv.config({ path: './.env.deploy' });
 
 const {
   DEPLOY_USER,
@@ -11,12 +11,6 @@ const {
 } = process.env;
 
 module.exports = {
-  apps: [{
-    name: 'frontend',
-  }],
-  env: {
-    NODE_ENV: 'production',
-  },
   deploy: {
     production: {
       user: DEPLOY_USER,
